@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Support — Own Way Games</title>
+<link rel="icon" href="Images/logo_0.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800;900&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0b16;
+  --panel:rgba(255,255,255,0.045);
+  --panel-brd:rgba(255,255,255,0.09);
+  --ink:#f4f2ff;
+  --muted:#9aa0c8;
+  --purple:#8a5cff;
+  --cyan:#2ce0f0;
+  --pink:#ff5fa8;
+  --amber:#ffc24b;
+  --grad-main:linear-gradient(120deg,var(--purple),var(--pink) 55%,var(--amber));
+  --radius:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Sora',sans-serif;min-height:100vh;overflow-x:hidden}
+h1,h2,h3,.display{font-family:'Unbounded',sans-serif}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--purple);color:#fff}
+img{max-width:100%;display:block}
+
+.bg-fx{position:fixed;inset:0;z-index:-3;overflow:hidden}
+.bg-fx::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 15% 10%,rgba(138,92,255,0.25),transparent 45%),
+             radial-gradient(circle at 85% 20%,rgba(44,224,240,0.18),transparent 45%),
+             radial-gradient(circle at 50% 100%,rgba(255,95,168,0.2),transparent 50%),
+             var(--bg);
+}
+.grain{position:fixed;inset:0;z-index:-2;opacity:0.05;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 6vw;
+  transition:background .35s ease, backdrop-filter .35s ease, box-shadow .35s ease, padding .35s ease;
+}
+nav.scrolled{
+  background:rgba(10,11,22,0.75);backdrop-filter:blur(16px);
+  box-shadow:0 8px 30px rgba(0,0,0,0.35);padding:12px 6vw;border-bottom:1px solid var(--panel-brd);
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{height:38px;width:38px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(138,92,255,0.6))}
+.brand span{font-family:'Unbounded';font-weight:700;font-size:1.05rem;letter-spacing:.5px}
+.nav-links{display:flex;gap:34px;align-items:center}
+.nav-links a{font-size:.92rem;font-weight:500;color:var(--muted);position:relative;padding:4px 0;transition:color .25s ease}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:-2px;height:2px;width:0%;background:var(--grad-main);transition:width .3s ease}
+.nav-links a:hover::after{width:100%}
+.nav-links a.active{color:var(--ink)}
+.nav-links a.active::after{width:100%}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:200}
+.burger span{width:26px;height:2px;background:var(--ink);transition:all .3s ease}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{
+  position:fixed;inset:0;background:rgba(9,10,20,0.97);backdrop-filter:blur(10px);z-index:90;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;
+  transform:translateY(-100%);transition:transform .45s cubic-bezier(.77,0,.18,1);
+}
+.mobile-menu.open{transform:translateY(0)}
+.mobile-menu a{font-family:'Unbounded';font-size:1.4rem;font-weight:600}
+
+.page-hero{padding:150px 6vw 60px;text-align:center;max-width:720px;margin:0 auto}
+.eyebrow{
+  font-size:.8rem;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);
+  border:1px solid rgba(44,224,240,0.35);padding:6px 16px;border-radius:999px;
+  background:rgba(44,224,240,0.08);display:inline-block;margin-bottom:22px;
+}
+.page-hero h1{
+  font-size:clamp(2.2rem,5.5vw,3.6rem);font-weight:900;margin-bottom:16px;
+  background:var(--grad-main);-webkit-background-clip:text;background-clip:text;color:transparent;
+  background-size:200% 200%;animation:gradflow 8s ease infinite;
+}
+@keyframes gradflow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.page-hero p{color:var(--muted);font-size:1.05rem;line-height:1.6}
+
+.form-wrap{max-width:680px;margin:0 auto 100px;padding:0 6vw}
+.form-card{
+  background:var(--panel);border:1px solid var(--panel-brd);border-radius:24px;
+  padding:44px;position:relative;overflow:visible;
+}
+.form-card::before{
+  content:'';position:absolute;top:-40%;left:-20%;width:70%;height:140%;
+  background:radial-gradient(circle,rgba(138,92,255,0.18),transparent 60%);pointer-events:none;
+}
+.field{margin-bottom:26px;position:relative;z-index:1}
+.field:focus-within, .field.active-field{z-index:10}
+
+.field label{
+  display:block;font-size:.82rem;letter-spacing:1px;text-transform:uppercase;color:var(--muted);
+  margin-bottom:10px;font-weight:600;
+}
+.field input,.field textarea{
+  width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--panel-brd);border-radius:12px;
+  padding:14px 16px;color:var(--ink);font-family:'Sora';font-size:.96rem;outline:none;
+  transition:border-color .25s ease, box-shadow .25s ease, background .25s ease;
+}
+
+.custom-select{position:relative;user-select:none}
+.select-trigger{
+  width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--panel-brd);border-radius:12px;
+  padding:14px 16px;color:var(--ink);font-family:'Sora';font-size:.96rem;outline:none;
+  cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+  transition:border-color .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.select-trigger.placeholder{color:var(--muted)}
+.select-trigger::after{
+  content:'';width:10px;height:6px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%239aa0c8' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-size:contain;transition:transform .3s ease;
+}
+.custom-select.open .select-trigger{
+  border-color:var(--purple);background:rgba(255,255,255,0.06);
+  box-shadow:0 0 0 4px rgba(138,92,255,0.15);
+}
+.custom-select.open .select-trigger::after{transform:rotate(180deg)}
+.select-options{
+  position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:9999;
+  background:#121424;border:1px solid #2a2d4a;border-radius:14px;
+  padding:8px;box-shadow:0 16px 40px rgba(0,0,0,0.95);
+  opacity:0;visibility:hidden;transform:translateY(-8px);
+  transition:opacity .25s ease, transform .25s ease, visibility .25s ease;
+}
+.custom-select.open .select-options{opacity:1;visibility:visible;transform:translateY(0)}
+.option-item{
+  padding:12px 14px;border-radius:8px;cursor:pointer;font-size:.94rem;color:var(--ink);
+  transition:background .2s ease, color .2s ease;
+}
+.option-item:hover{background:rgba(138,92,255,0.25);color:#fff}
+.option-item.selected{background:rgba(138,92,255,0.35);color:var(--cyan);font-weight:600}
+
+.field textarea{resize:vertical;min-height:130px;font-family:'Sora'}
+.field input:focus,.field textarea:focus{
+  border-color:var(--purple);background:rgba(255,255,255,0.06);
+  box-shadow:0 0 0 4px rgba(138,92,255,0.15);
+}
+.field .hint{font-size:.78rem;color:var(--muted);margin-top:8px}
+.field .error-msg{font-size:.78rem;color:var(--pink);margin-top:8px;display:none}
+.field.invalid .select-trigger,.field.invalid input,.field.invalid textarea{border-color:var(--pink)}
+.field.invalid .error-msg{display:block}
+
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+.submit-btn{
+  width:100%;padding:17px;border-radius:999px;border:none;cursor:pointer;
+  background:var(--grad-main);color:#0a0b16;font-weight:700;font-size:1rem;font-family:'Sora';
+  display:flex;align-items:center;justify-content:center;gap:12px;position:relative;
+  transition:transform .25s ease, box-shadow .25s ease, opacity .25s ease;
+  box-shadow:0 10px 30px rgba(255,95,168,0.3);
+}
+.submit-btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 16px 40px rgba(255,95,168,0.45)}
+.submit-btn:disabled{opacity:.7;cursor:not-allowed;transform:none}
+.spinner{
+  width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(10,11,22,0.25);
+  border-top-color:#0a0b16;display:none;animation:spin .7s linear infinite;
+}
+.submit-btn.loading .spinner{display:inline-block}
+.submit-btn.loading .btn-text{opacity:.85}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.toast-layer{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:300;
+  display:flex;flex-direction:column;gap:12px;align-items:center;width:min(92vw,420px);}
+.toast{
+  width:100%;padding:16px 20px;border-radius:14px;display:flex;align-items:center;gap:14px;
+  background:rgba(16,17,32,0.95);border:1px solid var(--panel-brd);backdrop-filter:blur(12px);
+  box-shadow:0 14px 40px rgba(0,0,0,0.4);
+  transform:translateY(30px);opacity:0;transition:transform .4s ease, opacity .4s ease;
+}
+.toast.show{transform:translateY(0);opacity:1}
+.toast .icon{
+  width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:800;flex-shrink:0;font-size:1rem;
+}
+.toast.success .icon{background:rgba(44,224,240,0.15);color:var(--cyan)}
+.toast.error .icon{background:rgba(255,95,168,0.15);color:var(--pink)}
+.toast .msg{flex:1}
+.toast .msg strong{display:block;font-size:.92rem;margin-bottom:2px}
+.toast .msg span{font-size:.82rem;color:var(--muted)}
+
+footer{padding:50px 6vw 40px;border-top:1px solid var(--panel-brd)}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;max-width:1300px;margin:0 auto}
+.footer-brand{display:flex;align-items:center;gap:10px}
+.footer-brand img{height:26px;width:26px;object-fit:contain}
+.footer-brand span{font-family:'Unbounded';font-weight:700;font-size:.95rem}
+.footer-links{display:flex;gap:26px;font-size:.85rem;color:var(--muted)}
+.footer-links a:hover{color:var(--ink)}
+.footer-copy{width:100%;text-align:center;font-size:.78rem;color:var(--muted);margin-top:24px}
+
+@media(max-width:900px){
+  .nav-links{display:none}
+  .burger{display:flex}
+  .footer-inner{flex-direction:column;text-align:center}
+}
+@media(max-width:560px){
+  .row2{grid-template-columns:1fr}
+  .form-card{padding:30px 22px}
+  .page-hero{padding-top:120px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-fx"></div>
+<div class="grain"></div>
+
+<nav id="nav">
+  <a class="brand" href="index.html">
+    <img src="Images/logo_0.png" alt="Own Way Games logo">
+    <span>OWN WAY GAMES</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="index.html#games">Games</a>
+    <a href="index.html#values">Studio</a>
+    <a href="support.html" class="active">Support</a>
+  </div>
+  <div class="burger" id="burger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="index.html#games">Games</a>
+  <a href="index.html#values">Studio</a>
+  <a href="support.html">Support</a>
+</div>
+
+<div class="page-hero">
+  <span class="eyebrow">We're listening</span>
+  <h1>Reach Us</h1>
+  <p>Report a bug, drop feedback, pitch an idea, or just say hello. Pick a subject and we'll route your message straight to the right team.</p>
+</div>
+
+<div class="form-wrap">
+  <div class="form-card">
+    <form id="supportForm" novalidate>
+      <div class="field" id="field-subject">
+        <label for="subjectTrigger">Subject</label>
+        <div class="custom-select" id="subjectDropdown">
+          <button type="button" class="select-trigger placeholder" id="subjectTrigger">Choose a subject</button>
+          <div class="select-options" id="subjectOptions"></div>
+        </div>
+        <input type="hidden" id="subject" name="subject" value="">
+        <div class="error-msg">Please choose a subject.</div>
+      </div>
+
+      <div class="field" id="field-name">
+        <label for="name">Your name</label>
+        <input type="text" id="name" placeholder="e.g. Jamie Carter" required>
+        <div class="error-msg">Please enter your name.</div>
+      </div>
+
+      <div class="field" id="field-description">
+        <label for="description">Description</label>
+        <textarea id="description" placeholder="Tell us what's going on, as much detail as helps." required></textarea>
+        <div class="error-msg">Please add a description.</div>
+      </div>
+
+      <div class="row2">
+        <div class="field" id="field-contactMethod">
+          <label for="contactMethodTrigger">Way to contact you</label>
+          <div class="custom-select" id="contactMethodDropdown">
+            <button type="button" class="select-trigger" id="contactMethodTrigger">Email</button>
+            <div class="select-options" id="contactMethodOptions">
+              <div class="option-item selected" data-value="Email">Email</div>
+              <div class="option-item" data-value="Discord">Discord Username</div>
+            </div>
+          </div>
+          <input type="hidden" id="contactMethod" name="contactMethod" value="Email">
+        </div>
+
+        <div class="field" id="field-contactValue">
+          <label for="contactValue" id="contactValueLabel">Email address</label>
+          <input type="email" id="contactValue" placeholder="you@example.com" required>
+          <div class="error-msg" id="contactValueError">Please enter a valid email.</div>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span class="spinner"></span>
+        <span class="btn-text">Send message</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<div class="toast-layer" id="toastLayer"></div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="Images/logo_0.png" alt="Own Way Games">
+      <span>OWN WAY GAMES</span>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#games">Games</a>
+      <a href="support.html">Support</a>
+    </div>
+    <div class="footer-copy">© 2026 Own Way Games. All paths lead somewhere.</div>
+  </div>
+</footer>
+
+<script>
+const subjectsData = [
+  { "name": "FeedBack", "Discordwebhook": "https://discord.com/api/webhooks/1541878029259907193/aihFqRinRosFInMkP2srFDQoLIDYTfCpOGKERWPQaLXzpkaQVt17a-Kj3UbqEeI561SJ" },
+  { "name": "Bug", "Discordwebhook": "https://discord.com/api/webhooks/1541878167273218061/w8DP2Q38wm2ns2vmoUGl2AmN2yOiRfS0c3Hx4cj5vLGCHJ86fWZjCyUoWiSZyOtbVnAp" },
+  { "name": "Offer An Idea", "Discordwebhook": "https://discord.com/api/webhooks/1541878256565883000/B_tXJRL4At4OjOk7BcuTBbFc4NZ8AomgQOSQk4fCdinX0xby-dDKmMyKQBDfywcN6bxf" },
+  { "name": "Something Else", "Discordwebhook": "https://discord.com/api/webhooks/1541878343593500767/kmoPSJwqXrCuB1TItBhY99cS4-vnAMkamzqon-GKIw-8cDKuL_GG2cp3A8bXGjUrH-Fd" }
+];
+
+const subjectDropdown = document.getElementById('subjectDropdown');
+const subjectTrigger = document.getElementById('subjectTrigger');
+const subjectOptions = document.getElementById('subjectOptions');
+const subjectInput = document.getElementById('subject');
+
+subjectsData.forEach(s => {
+  const opt = document.createElement('div');
+  opt.className = 'option-item';
+  opt.dataset.value = s.name;
+  opt.textContent = s.name;
+  subjectOptions.appendChild(opt);
+});
+
+function setupCustomSelect(dropdownEl, triggerEl, optionsEl, hiddenInputEl, onChangeCallback) {
+  triggerEl.addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.querySelectorAll('.custom-select').forEach(el => {
+      if (el !== dropdownEl) {
+        el.classList.remove('open');
+        el.closest('.field').classList.remove('active-field');
+      }
+    });
+    
+    const isOpen = dropdownEl.classList.toggle('open');
+    dropdownEl.closest('.field').classList.toggle('active-field', isOpen);
+  });
+
+  optionsEl.addEventListener('click', (e) => {
+    const item = e.target.closest('.option-item');
+    if (!item) return;
+
+    optionsEl.querySelectorAll('.option-item').forEach(el => el.classList.remove('selected'));
+    item.classList.add('selected');
+
+    triggerEl.textContent = item.textContent;
+    triggerEl.classList.remove('placeholder');
+    hiddenInputEl.value = item.dataset.value;
+
+    dropdownEl.classList.remove('open');
+    dropdownEl.closest('.field').classList.remove('active-field');
+    if (onChangeCallback) onChangeCallback(item.dataset.value);
+  });
+}
+
+setupCustomSelect(subjectDropdown, subjectTrigger, subjectOptions, subjectInput);
+
+const contactMethodDropdown = document.getElementById('contactMethodDropdown');
+const contactMethodTrigger = document.getElementById('contactMethodTrigger');
+const contactMethodOptions = document.getElementById('contactMethodOptions');
+const contactMethodInput = document.getElementById('contactMethod');
+
+setupCustomSelect(contactMethodDropdown, contactMethodTrigger, contactMethodOptions, contactMethodInput, (val) => {
+  updateContactField();
+});
+
+document.addEventListener('click', () => {
+  document.querySelectorAll('.custom-select').forEach(el => el.classList.remove('open'));
+  document.querySelectorAll('.field').forEach(el => el.classList.remove('active-field'));
+});
+
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobileMenu');
+burger.addEventListener('click', () => {
+  burger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  burger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+}));
+
+const contactValue = document.getElementById('contactValue');
+const contactValueLabel = document.getElementById('contactValueLabel');
+const contactValueError = document.getElementById('contactValueError');
+
+function updateContactField(){
+  if(contactMethodInput.value === 'Email'){
+    contactValueLabel.textContent = 'Email address';
+    contactValue.type = 'email';
+    contactValue.placeholder = 'you@example.com';
+    contactValueError.textContent = 'Please enter a valid email.';
+  } else {
+    contactValueLabel.textContent = 'Discord username';
+    contactValue.type = 'text';
+    contactValue.placeholder = 'e.g. jamie#0001 or jamie.dev';
+    contactValueError.textContent = 'Please enter your Discord username.';
+  }
+  contactValue.value = '';
+}
+
+function showToast(type, title, message){
+  const layer = document.getElementById('toastLayer');
+  const toast = document.createElement('div');
+  toast.className = 'toast ' + type;
+  toast.innerHTML = `
+    <div class="icon">${type === 'success' ? '✓' : '!'}</div>
+    <div class="msg"><strong>${title}</strong><span>${message}</span></div>
+  `;
+  layer.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('show'));
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 400);
+  }, 4500);
+}
+
+function setInvalid(fieldId, invalid){
+  document.getElementById(fieldId).classList.toggle('invalid', invalid);
+}
+
+function isValidEmail(v){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
+
+const form = document.getElementById('supportForm');
+const submitBtn = document.getElementById('submitBtn');
+const btnText = submitBtn.querySelector('.btn-text');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const subjectVal = subjectInput.value;
+  const nameVal = document.getElementById('name').value.trim();
+  const descVal = document.getElementById('description').value.trim();
+  const methodVal = contactMethodInput.value;
+  const contactVal = contactValue.value.trim();
+
+  let valid = true;
+  setInvalid('field-subject', !subjectVal);
+  if(!subjectVal) valid = false;
+
+  setInvalid('field-name', !nameVal);
+  if(!nameVal) valid = false;
+
+  setInvalid('field-description', !descVal);
+  if(!descVal) valid = false;
+
+  const contactOk = methodVal === 'Email' ? isValidEmail(contactVal) : contactVal.length > 1;
+  setInvalid('field-contactValue', !contactOk);
+  if(!contactOk) valid = false;
+
+  if(!valid){
+    showToast('error', 'Check the form', 'Some fields need your attention before sending.');
+    return;
+  }
+
+  const subjectObj = subjectsData.find(s => s.name === subjectVal);
+
+  submitBtn.disabled = true;
+  submitBtn.classList.add('loading');
+  btnText.textContent = 'Sending...';
+
+  try{
+    const payload = {
+      embeds: [{
+        title: `New "${subjectVal}" submission`,
+        color: 9109247,
+        fields: [
+          { name: 'Name', value: nameVal, inline: true },
+          { name: 'Contact Method', value: methodVal, inline: true },
+          { name: 'Contact Info', value: contactVal, inline: false },
+          { name: 'Description', value: descVal, inline: false }
+        ],
+        timestamp: new Date().toISOString(),
+        footer: { text: 'Own Way Games — Support Form' }
+      }]
+    };
+
+    const res = await fetch(subjectObj.Discordwebhook, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if(!res.ok){ throw new Error('Request failed with status ' + res.status); }
+
+    showToast('success', 'Message sent', 'Thanks for reaching out, we\'ll take it from here.');
+    form.reset();
+    
+    subjectInput.value = '';
+    subjectTrigger.textContent = 'Choose a subject';
+    subjectTrigger.classList.add('placeholder');
+    subjectOptions.querySelectorAll('.option-item').forEach(el => el.classList.remove('selected'));
+
+    contactMethodInput.value = 'Email';
+    contactMethodTrigger.textContent = 'Email';
+    contactMethodOptions.querySelectorAll('.option-item').forEach(el => el.classList.remove('selected'));
+    contactMethodOptions.querySelector('[data-value="Email"]').classList.add('selected');
+
+    updateContactField();
+  } catch(err){
+    showToast('error', 'Something went wrong', 'Your message could not be sent, please try again.');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.classList.remove('loading');
+    btnText.textContent = 'Send message';
+  }
+});
+</script>
+</body>
+</html>

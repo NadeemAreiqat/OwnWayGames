@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Own Way Games</title>
+<link rel="icon" href="Images/logo_0.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Unbounded:wght@500;700;800;900&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0b16;
+  --bg-2:#0f1120;
+  --panel:rgba(255,255,255,0.045);
+  --panel-brd:rgba(255,255,255,0.09);
+  --ink:#f4f2ff;
+  --muted:#9aa0c8;
+  --purple:#8a5cff;
+  --cyan:#2ce0f0;
+  --pink:#ff5fa8;
+  --amber:#ffc24b;
+  --grad-main:linear-gradient(120deg,var(--purple),var(--pink) 55%,var(--amber));
+  --grad-cool:linear-gradient(120deg,var(--cyan),var(--purple));
+  --radius:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Sora',sans-serif;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+h1,h2,h3,.display{font-family:'Fredoka','Unbounded',sans-serif}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--purple);color:#fff}
+img{max-width:100%;display:block}
+
+.bg-fx{position:fixed;inset:0;z-index:-3;overflow:hidden}
+.bg-fx::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 15% 10%,rgba(138,92,255,0.28),transparent 45%),
+             radial-gradient(circle at 85% 25%,rgba(44,224,240,0.2),transparent 45%),
+             radial-gradient(circle at 50% 90%,rgba(255,95,168,0.22),transparent 50%),
+             var(--bg);
+}
+.grain{position:fixed;inset:0;z-index:-2;opacity:0.05;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.cubes{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.cube{
+  position:absolute;border-radius:6px;
+  background:linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0.02));
+  border:1px solid rgba(255,255,255,0.12);
+  backdrop-filter:blur(2px);
+  animation:drift linear infinite;
+}
+@keyframes drift{
+  0%{transform:translateY(0) rotate(0deg);opacity:0}
+  10%{opacity:.9}
+  90%{opacity:.9}
+  100%{transform:translateY(-120vh) rotate(220deg);opacity:0}
+}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  padding:18px 6vw;
+  transition:background .35s ease, backdrop-filter .35s ease, box-shadow .35s ease, padding .35s ease;
+}
+nav.scrolled{
+  background:rgba(10,11,22,0.75);
+  backdrop-filter:blur(16px);
+  box-shadow:0 8px 30px rgba(0,0,0,0.35);
+  padding:12px 6vw;
+  border-bottom:1px solid var(--panel-brd);
+}
+.brand{display:flex;align-items:center;gap:12px;justify-self:start}
+.brand img{height:38px;width:38px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(138,92,255,0.6))}
+.brand span{font-family:'Unbounded';font-weight:700;font-size:1.05rem;letter-spacing:.5px}
+.nav-links{display:flex;gap:34px;align-items:center;justify-self:center}
+.nav-links a{
+  font-size:.92rem;font-weight:500;color:var(--muted);position:relative;padding:4px 0;
+  transition:color .25s ease;
+}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a::after{
+  content:'';position:absolute;left:0;bottom:-2px;height:2px;width:0%;
+  background:var(--grad-main);transition:width .3s ease;
+}
+.nav-links a:hover::after{width:100%}
+.nav-cta{
+  justify-self:end;
+  background:var(--grad-main);color:#0a0b16;font-weight:700;padding:10px 22px;
+  border-radius:999px;font-size:.88rem;box-shadow:0 6px 24px rgba(255,95,168,0.35);
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.nav-cta:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 10px 30px rgba(255,95,168,0.5)}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:200;justify-self:end}
+.burger span{width:26px;height:2px;background:var(--ink);transition:all .3s ease}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.mobile-menu{
+  position:fixed;inset:0;background:rgba(9,10,20,0.97);backdrop-filter:blur(10px);
+  z-index:90;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;
+  transform:translateY(-100%);transition:transform .45s cubic-bezier(.77,0,.18,1);
+}
+.mobile-menu.open{transform:translateY(0)}
+.mobile-menu a{font-family:'Unbounded';font-size:1.4rem;font-weight:600}
+
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  position:relative;padding:140px 6vw 100px;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:-1;
+  background-image:url('Images/background_0.png');
+  background-size:cover;background-position:center;
+  opacity:0.35;
+  mask-image:linear-gradient(to bottom,black 60%,transparent 100%);
+}
+.hero-inner{
+  display:flex;flex-direction:column;align-items:center;text-align:center;gap:26px;max-width:900px;
+}
+.hero-logo-wrap{
+  position:relative;width:150px;height:150px;display:flex;align-items:center;justify-content:center;
+  margin-bottom:6px;
+}
+.hero-logo-wrap::before{
+  content:'';position:absolute;inset:-30px;border-radius:50%;
+  background:var(--grad-main);filter:blur(40px);opacity:.55;
+  animation:pulse 4s ease-in-out infinite;
+}
+.hero-logo-wrap img{position:relative;width:100%;height:100%;object-fit:contain;
+  animation:floaty 5s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.7;transform:scale(1.12)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+.eyebrow{
+  font-size:.8rem;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);
+  border:1px solid rgba(44,224,240,0.35);padding:6px 16px;border-radius:999px;
+  background:rgba(44,224,240,0.08);
+}
+.hero h1{
+  font-family:'Fredoka',sans-serif;
+  font-size:clamp(2.8rem,7.5vw,5.5rem);line-height:1.05;font-weight:800;
+  background:var(--grad-main);-webkit-background-clip:text;background-clip:text;color:transparent;
+  background-size:200% 200%;animation:gradflow 8s ease infinite;
+}
+@keyframes gradflow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.hero p{font-size:1.1rem;color:var(--muted);max-width:560px;line-height:1.6}
+.hero-btns{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+.btn{
+  padding:15px 32px;border-radius:999px;font-weight:600;font-size:.95rem;
+  transition:transform .25s ease, box-shadow .25s ease;display:inline-flex;align-items:center;gap:8px;
+}
+.btn-primary{background:var(--grad-main);color:#0a0b16;box-shadow:0 10px 30px rgba(255,95,168,0.3)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(255,95,168,0.45)}
+.btn-ghost{border:1px solid var(--panel-brd);color:var(--ink);background:var(--panel)}
+.btn-ghost:hover{background:rgba(255,255,255,0.08);transform:translateY(-3px)}
+.social-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+.social-btn{
+  display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;
+  background:var(--panel);border:1px solid var(--panel-brd);color:var(--ink);font-weight:600;font-size:.9rem;
+  transition:transform .25s ease, border-color .25s ease, background .25s ease, box-shadow .25s ease, opacity .25s ease;
+  cursor:pointer;
+}
+.social-btn svg{width:18px;height:18px;flex-shrink:0}
+.social-btn:hover:not(.disabled){transform:translateY(-3px);border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.08);box-shadow:0 10px 26px rgba(0,0,0,0.35)}
+.social-btn.disabled{opacity:.45;cursor:not-allowed}
+.social-btn.discord:hover:not(.disabled){border-color:#8a5cff;box-shadow:0 10px 26px rgba(138,92,255,0.35)}
+.social-btn.instagram:hover:not(.disabled){border-color:#ff5fa8;box-shadow:0 10px 26px rgba(255,95,168,0.35)}
+
+.scroll-cue{
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--muted);font-size:.75rem;
+  letter-spacing:2px;text-transform:uppercase;
+}
+.scroll-cue .line{width:1px;height:40px;background:linear-gradient(var(--purple),transparent);
+  animation:scrolldown 1.8s ease-in-out infinite;}
+@keyframes scrolldown{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+.path-section{position:relative;padding:0 6vw;max-width:1200px;margin:0 auto}
+.path-svg{width:100%;height:120px;display:block}
+.path-svg path{
+  fill:none;stroke:url(#pathgrad);stroke-width:3;stroke-linecap:round;
+  stroke-dasharray:1200;stroke-dashoffset:1200;transition:stroke-dashoffset 1.8s ease;
+}
+.path-svg.in-view path{stroke-dashoffset:0}
+
+section{padding:70px 6vw;max-width:1300px;margin:0 auto;position:relative}
+.section-head{text-align:center;max-width:640px;margin:0 auto 56px}
+.section-head .eyebrow{margin-bottom:18px;display:inline-block}
+.section-head h2{font-size:clamp(2rem,4vw,3rem);font-weight:800;margin-bottom:14px}
+.section-head p{color:var(--muted);font-size:1.02rem;line-height:1.6}
+
+.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px}
+.game-card{
+  background:var(--panel);border:1px solid var(--panel-brd);border-radius:var(--radius);
+  padding:34px 30px;position:relative;overflow:hidden;
+  transition:transform .4s ease, border-color .4s ease, box-shadow .4s ease;
+}
+.game-card::before{
+  content:'';position:absolute;inset:0;opacity:0;transition:opacity .4s ease;
+  background:radial-gradient(circle at 30% 0%,rgba(138,92,255,0.25),transparent 60%);
+}
+.game-card:hover{transform:translateY(-8px);border-color:rgba(138,92,255,0.5);box-shadow:0 20px 50px rgba(20,10,50,0.5)}
+.game-card:hover::before{opacity:1}
+.game-logo{
+  width:72px;height:72px;border-radius:16px;background:rgba(255,255,255,0.05);
+  display:flex;align-items:center;justify-content:center;margin-bottom:22px;overflow:hidden;
+  border:1px solid var(--panel-brd);
+}
+.game-logo img{width:100%;height:100%;object-fit:cover}
+.game-logo .fallback{
+  width:100%;height:100%;background:var(--grad-cool);display:flex;align-items:center;justify-content:center;
+  font-family:'Unbounded';font-weight:800;color:#0a0b16;font-size:1.4rem;
+}
+.game-card h3{font-size:1.35rem;margin-bottom:10px;font-weight:700}
+.game-card p{color:var(--muted);font-size:.94rem;line-height:1.6;margin-bottom:22px}
+.game-status{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.badge{
+  font-size:.72rem;letter-spacing:1px;text-transform:uppercase;font-weight:700;padding:6px 14px;border-radius:999px;
+}
+.badge.released{background:rgba(44,224,240,0.15);color:var(--cyan);border:1px solid rgba(44,224,240,0.4)}
+.badge.dev{background:rgba(255,194,75,0.15);color:var(--amber);border:1px solid rgba(255,194,75,0.4)}
+.steam-link{
+  font-size:.85rem;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:6px;
+  border-bottom:1px solid transparent;transition:border-color .25s ease;
+}
+.steam-link:hover{border-color:var(--ink)}
+
+.values{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+.value-card{
+  background:var(--panel);border:1px solid var(--panel-brd);border-radius:var(--radius);
+  padding:28px 24px;transition:transform .3s ease,border-color .3s ease;
+}
+.value-card:hover{transform:translateY(-6px);border-color:rgba(255,95,168,0.4)}
+.value-card .num{font-family:'Unbounded';font-weight:800;font-size:.85rem;color:var(--pink);margin-bottom:14px}
+.value-card h4{font-size:1.1rem;margin-bottom:8px;font-weight:700}
+.value-card p{color:var(--muted);font-size:.9rem;line-height:1.55}
+
+.cta-band{
+  border-radius:24px;padding:64px 6vw;text-align:center;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(138,92,255,0.15),rgba(255,95,168,0.12));
+  border:1px solid var(--panel-brd);margin:0 6vw 80px;
+}
+.cta-band h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-bottom:16px}
+.cta-band p{color:var(--muted);margin-bottom:30px;max-width:520px;margin-left:auto;margin-right:auto}
+
+footer{padding:50px 6vw 40px;border-top:1px solid var(--panel-brd);}
+.footer-inner{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  max-width:1300px;
+  margin:0 auto;
+}
+.footer-brand{display:flex;align-items:center;gap:10px;justify-self:start}
+.footer-brand img{height:26px;width:26px;object-fit:contain}
+.footer-brand span{font-family:'Unbounded';font-weight:700;font-size:.95rem}
+.footer-links{display:flex;gap:26px;font-size:.85rem;color:var(--muted);justify-self:end}
+.footer-links a:hover{color:var(--ink)}
+.footer-copy{grid-column:2;text-align:center;font-size:.78rem;color:var(--muted);justify-self:center}
+
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease, transform .8s ease}
+.reveal.in-view{opacity:1;transform:translateY(0)}
+
+@media(max-width:900px){
+  nav{display:flex;justify-content:space-between}
+  .nav-links,.nav-cta{display:none}
+  .burger{display:flex}
+  .footer-inner{
+    display:flex;
+    flex-direction:column;
+    text-align:center;
+    gap:18px;
+  }
+  .footer-brand, .footer-links, .footer-copy{justify-self:center}
+}
+@media(max-width:520px){
+  .hero{padding-top:120px}
+  .hero-logo-wrap{width:110px;height:110px}
+  .btn{padding:13px 24px;font-size:.88rem}
+  section{padding:50px 6vw}
+  .cta-band{padding:44px 6vw}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-fx"></div>
+<div class="grain"></div>
+<div class="cubes" id="cubes"></div>
+
+<nav id="nav">
+  <a class="brand" href="#top">
+    <img src="Images/logo_0.png" alt="Own Way Games logo">
+    <span>OWN WAY GAMES</span>
+  </a>
+  <div class="nav-links">
+    <a href="#top">Home</a>
+    <a href="#games">Games</a>
+    <a href="#values">Studio</a>
+    <a href="support.html">Support</a>
+  </div>
+  <a class="nav-cta" href="support.html">Get Support</a>
+  <div class="burger" id="burger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#top">Home</a>
+  <a href="#games">Games</a>
+  <a href="#values">Studio</a>
+  <a href="support.html">Support</a>
+</div>
+
+<header class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <span class="eyebrow">Independent Game Studio</span>
+    <div class="hero-logo-wrap">
+      <img src="Images/logo_0.png" alt="Own Way Games" id="heroLogo">
+    </div>
+    <h1>I Build Games<br>On My Own Way</h1>
+    <p>Own Way Games is a small studio crafting bold, block-built worlds and stories that don't follow the map. Every project is a path we cut ourselves.</p>
+    <div class="hero-btns">
+      <a class="btn btn-primary" href="#games">Explore Our Games</a>
+      <a class="btn btn-ghost" href="support.html">Contact The Studio</a>
+    </div>
+    <div class="social-row" id="socialRow"></div>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
+</header>
+
+<div class="path-section">
+  <svg class="path-svg" id="pathSvg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="pathgrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#8a5cff"/>
+        <stop offset="50%" stop-color="#ff5fa8"/>
+        <stop offset="100%" stop-color="#ffc24b"/>
+      </linearGradient>
+    </defs>
+    <path d="M0,60 C200,10 300,110 500,60 C700,10 800,110 1000,60 C1100,35 1150,35 1200,60"/>
+  </svg>
+</div>
+
+<section id="games">
+  <div class="section-head reveal">
+    <span class="eyebrow">Our Catalog</span>
+    <h2>Games we're forging</h2>
+    <p>From early prototypes to Steam-bound releases, here's what's on our workbench right now.</p>
+  </div>
+  <div class="games-grid" id="gamesGrid"></div>
+</section>
+
+<section id="values">
+  <div class="section-head reveal">
+    <span class="eyebrow">Why Own Way</span>
+    <h2>Small studio, sharp direction</h2>
+    <p>No publisher scripts. No formulas. Just a tight team that ships what it believes in.</p>
+  </div>
+  <div class="values">
+    <div class="value-card reveal">
+      <div class="num">Independent</div>
+      <h4>Self-published</h4>
+      <p>We own our roadmap end to end, so every design decision serves the players, not a spreadsheet.</p>
+    </div>
+    <div class="value-card reveal">
+      <div class="num">Handcrafted</div>
+      <h4>Built block by block</h4>
+      <p>Systems and worlds are designed from the ground up, with care put into every mechanic that ships.</p>
+    </div>
+    <div class="value-card reveal">
+      <div class="num">Community-first</div>
+      <h4>We listen and iterate</h4>
+      <p>Feedback, bugs and ideas from players shape the games directly, no closed doors.</p>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band reveal">
+  <h2>Got feedback, a bug, or an idea?</h2>
+  <p>Tell us what's on your mind and we'll route it straight to the right team on Discord.</p>
+  <a class="btn btn-primary" href="support.html">Open Support</a>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="Images/logo_0.png" alt="Own Way Games">
+      <span>OWN WAY GAMES</span>
+    </div>
+    <div class="footer-copy">© 2026 Own Way Games. All paths lead somewhere.</div>
+    <div class="footer-links">
+      <a href="#top">Home</a>
+      <a href="#games">Games</a>
+      <a href="support.html">Support</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const gamesData = [
+  {
+    "gameName": "Cubito World",
+    "gameDescription": "Navigate vibrant voxel environments, solve intricate puzzles, and build your path through an ever-shifting block-based universe.",
+    "isReleased": false,
+    "steamStorePage": "",
+    "paths": { "logo": "cubitoworld/logo.png" }
+  }
+];
+
+const socialsData = [
+  { "Name": "Discord", "Url": "" },
+  { "Name": "Instagram", "Url": "" }
+];
+
+const socialIcons = {
+  discord: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028ZM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418Zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418Z"/></svg>',
+  instagram: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>'
+};
+
+const socialRow = document.getElementById('socialRow');
+socialsData.forEach(s => {
+  const hasUrl = !!s.Url;
+  const btn = document.createElement(hasUrl ? 'a' : 'button');
+  const key = s.Name.toLowerCase();
+  btn.className = `social-btn ${key} ${hasUrl ? '' : 'disabled'}`.trim();
+  if(hasUrl){
+    btn.href = s.Url;
+    btn.target = '_blank';
+    btn.rel = 'noopener';
+  } else {
+    btn.type = 'button';
+    btn.title = `${s.Name} link coming soon`;
+    btn.addEventListener('click', () => false);
+  }
+  btn.innerHTML = `${socialIcons[key] || ''}<span>${s.Name}</span>`;
+  socialRow.appendChild(btn);
+});
+
+const gamesGrid = document.getElementById('gamesGrid');
+gamesData.forEach(game => {
+  const card = document.createElement('div');
+  card.className = 'game-card reveal';
+  const initials = game.gameName.split(' ').map(w => w[0]).join('').slice(0,2);
+  const statusBadge = game.isReleased
+    ? '<span class="badge released">Released</span>'
+    : '<span class="badge dev">In Development</span>';
+  const steamLink = (game.isReleased && game.steamStorePage)
+    ? `<a class="steam-link" href="${game.steamStorePage}" target="_blank" rel="noopener">View on Steam →</a>`
+    : `<span class="steam-link" style="opacity:.5">Coming to Steam</span>`;
+
+  card.innerHTML = `
+    <div class="game-logo">
+      <img src="Images/${game.paths.logo}" alt="${game.gameName} logo" onerror="this.parentElement.innerHTML='<div class=\\'fallback\\'>${initials}</div>'">
+    </div>
+    <h3>${game.gameName}</h3>
+    <p>${game.gameDescription}</p>
+    <div class="game-status">${statusBadge}${steamLink}</div>
+  `;
+  gamesGrid.appendChild(card);
+});
+
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobileMenu');
+burger.addEventListener('click', () => {
+  burger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  burger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+}));
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in-view'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+const pathSvg = document.getElementById('pathSvg');
+const pathIo = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) pathSvg.classList.add('in-view'); });
+}, { threshold: 0.4 });
+pathIo.observe(pathSvg);
+
+const cubeWrap = document.getElementById('cubes');
+const cubeColors = ['#8a5cff','#2ce0f0','#ff5fa8','#ffc24b'];
+for(let i=0;i<22;i++){
+  const c = document.createElement('div');
+  c.className = 'cube';
+  const size = 8 + Math.random()*22;
+  c.style.width = size+'px';
+  c.style.height = size+'px';
+  c.style.left = Math.random()*100+'vw';
+  c.style.top = 100+Math.random()*20+'vh';
+  c.style.background = cubeColors[i % cubeColors.length]+'33';
+  c.style.borderColor = cubeColors[i % cubeColors.length]+'55';
+  c.style.animationDuration = (14+Math.random()*16)+'s';
+  c.style.animationDelay = (Math.random()*10)+'s';
+  cubeWrap.appendChild(c);
+}
+
+const heroLogo = document.getElementById('heroLogo');
+window.addEventListener('mousemove', (e) => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 18;
+  const y = (e.clientY / window.innerHeight - 0.5) * 18;
+  heroLogo.style.transform = `translate(${x}px, ${y}px)`;
+});
+</script>
+</body>
+</html>
