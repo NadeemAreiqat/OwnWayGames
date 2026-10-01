@@ -2,533 +2,274 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Own Way Games</title>
-<link rel="icon" href="Images/logo_0.png">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OwnWayGames</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="apple-touch-icon" href="images/logo.png">
+<meta name="description" content="OwnWayGames - an indie game studio making games on my own way. Find our games, follow us, and get support.">
+<meta name="keywords" content="OwnWayGames, OwnWay, indie games, indie game studio, Steam games, Cubito, game developer">
+<meta name="author" content="OwnWayGames">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#ff8fb8">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="OwnWayGames">
+<meta property="og:title" content="OwnWayGames">
+<meta property="og:description" content="Making games on my own way.">
+<meta property="og:image" content="images/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OwnWayGames">
+<meta name="twitter:description" content="Making games on my own way.">
+<meta name="twitter:image" content="images/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700;800&family=Grandstander:wght@600;700;800&family=Unbounded:wght@500;700;800;900&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0a0b16;
-  --bg-2:#0f1120;
-  --panel:rgba(255,255,255,0.045);
-  --panel-brd:rgba(255,255,255,0.09);
-  --ink:#f4f2ff;
-  --muted:#9aa0c8;
-  --purple:#8a5cff;
-  --cyan:#2ce0f0;
-  --pink:#ff5fa8;
-  --amber:#ffc24b;
-  --grad-main:linear-gradient(120deg,var(--purple),var(--pink) 55%,var(--amber));
-  --grad-cool:linear-gradient(120deg,var(--cyan),var(--purple));
-  --radius:18px;
+  --ink:#3b2f4a;
+  --soft:#6f6280;
+  --card:rgba(255,255,255,.88);
+  --pink:#ff8fb8;
+  --pink-d:#f0679b;
+  --line:#f3d4e2;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
-  background:var(--bg);
+  font-family:'Fredoka',system-ui,sans-serif;
   color:var(--ink);
-  font-family:'Sora',sans-serif;
-  overflow-x:hidden;
   min-height:100vh;
+  background:#fdeaf3 url("images/background.png") center/cover fixed no-repeat;
+  line-height:1.5;
 }
-h1,h2,h3,.display{font-family:'Fredoka','Unbounded',sans-serif}
-a{color:inherit;text-decoration:none}
-::selection{background:var(--purple);color:#fff}
-img{max-width:100%;display:block}
+.wrap{max-width:760px;margin:0 auto;padding:56px 20px 40px}
 
-.bg-fx{position:fixed;inset:0;z-index:-3;overflow:hidden}
-.bg-fx::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(circle at 15% 10%,rgba(138,92,255,0.28),transparent 45%),
-             radial-gradient(circle at 85% 25%,rgba(44,224,240,0.2),transparent 45%),
-             radial-gradient(circle at 50% 90%,rgba(255,95,168,0.22),transparent 50%),
-             var(--bg);
+header{text-align:center;margin-bottom:40px}
+header img{display:block;margin:0 auto;max-width:min(320px,80%);height:auto;filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))}
+header p{color:#fff;font-size:1.2rem;font-weight:500;margin-top:12px;text-shadow:0 2px 10px rgba(0,0,0,.45)}
+section{
+  background:var(--card);
+  border-radius:28px;
+  padding:28px;
+  margin-bottom:24px;
+  backdrop-filter:blur(6px);
+  box-shadow:0 8px 30px rgba(240,103,155,.15);
 }
-.grain{position:fixed;inset:0;z-index:-2;opacity:0.05;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+section h2{font-size:1.5rem;margin-bottom:18px}
+#games-list{display:flex;flex-direction:column;gap:16px;align-items:center}
+#games-list iframe{max-width:100%;border:0;border-radius:12px}
+.socials{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.socials a{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px;border-radius:18px;text-decoration:none;
+  color:var(--ink);font-weight:600;background:#fff;border:2px solid var(--line);
+  transition:transform .15s,border-color .15s;
 }
-.cubes{position:fixed;inset:0;z-index:-1;pointer-events:none}
-.cube{
-  position:absolute;border-radius:6px;
-  background:linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0.02));
-  border:1px solid rgba(255,255,255,0.12);
-  backdrop-filter:blur(2px);
-  animation:drift linear infinite;
-}
-@keyframes drift{
-  0%{transform:translateY(0) rotate(0deg);opacity:0}
-  10%{opacity:.9}
-  90%{opacity:.9}
-  100%{transform:translateY(-120vh) rotate(220deg);opacity:0}
-}
-
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:center;
-  padding:18px 6vw;
-  transition:background .35s ease, backdrop-filter .35s ease, box-shadow .35s ease, padding .35s ease;
-}
-nav.scrolled{
-  background:rgba(10,11,22,0.75);
-  backdrop-filter:blur(16px);
-  box-shadow:0 8px 30px rgba(0,0,0,0.35);
-  padding:12px 6vw;
-  border-bottom:1px solid var(--panel-brd);
-}
-.brand{display:flex;align-items:center;gap:12px;justify-self:start}
-.brand img{height:38px;width:38px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(138,92,255,0.6))}
-.brand span{font-family:'Fredoka','Grandstander',cursive,sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:.5px}
-.nav-links{display:flex;gap:34px;align-items:center;justify-self:center}
-.nav-links a{
-  font-size:.92rem;font-weight:500;color:var(--muted);position:relative;padding:4px 0;
-  transition:color .25s ease;
-}
-.nav-links a:hover{color:var(--ink)}
-.nav-links a::after{
-  content:'';position:absolute;left:0;bottom:-2px;height:2px;width:0%;
-  background:var(--grad-main);transition:width .3s ease;
-}
-.nav-links a:hover::after{width:100%}
-.nav-cta{
-  justify-self:end;
-  background:var(--grad-main);color:#0a0b16;font-weight:700;padding:10px 22px;
-  border-radius:999px;font-size:.88rem;box-shadow:0 6px 24px rgba(255,95,168,0.35);
-  transition:transform .25s ease, box-shadow .25s ease;
-}
-.nav-cta:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 10px 30px rgba(255,95,168,0.5)}
-.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:200;justify-self:end}
-.burger span{width:26px;height:2px;background:var(--ink);transition:all .3s ease}
-.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-.burger.open span:nth-child(2){opacity:0}
-.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-
-.mobile-menu{
-  position:fixed;inset:0;background:rgba(9,10,20,0.97);backdrop-filter:blur(10px);
-  z-index:90;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;
-  transform:translateY(-100%);transition:transform .45s cubic-bezier(.77,0,.18,1);
-}
-.mobile-menu.open{transform:translateY(0)}
-.mobile-menu a{font-family:'Unbounded';font-size:1.4rem;font-weight:600}
-
-.hero{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  position:relative;padding:140px 6vw 100px;overflow:hidden;
-}
-.hero-bg{
-  position:absolute;inset:0;z-index:-1;
-  background-image:url('Images/background_0.png');
-  background-size:cover;background-position:center;
-  opacity:0.35;
-  mask-image:linear-gradient(to bottom,black 60%,transparent 100%);
-}
-.hero-inner{
-  display:flex;flex-direction:column;align-items:center;text-align:center;gap:26px;max-width:900px;
-}
-.hero-logo-wrap{
-  position:relative;width:150px;height:150px;display:flex;align-items:center;justify-content:center;
-  margin-bottom:6px;
-}
-.hero-logo-wrap::before{
-  content:'';position:absolute;inset:-30px;border-radius:50%;
-  background:var(--grad-main);filter:blur(40px);opacity:.55;
-  animation:pulse 4s ease-in-out infinite;
-}
-.hero-logo-wrap img{position:relative;width:100%;height:100%;object-fit:contain;
-  animation:floaty 5s ease-in-out infinite;
-}
-@keyframes pulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.7;transform:scale(1.12)}}
-@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-
-.eyebrow{
-  font-size:.8rem;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);
-  border:1px solid rgba(44,224,240,0.35);padding:6px 16px;border-radius:999px;
-  background:rgba(44,224,240,0.08);
-}
-.hero h1{
-  font-family:'Fredoka',sans-serif;
-  font-size:clamp(2.8rem,7.5vw,5.5rem);line-height:1.05;font-weight:800;
-  background:var(--grad-main);-webkit-background-clip:text;background-clip:text;color:transparent;
-  background-size:200% 200%;animation:gradflow 8s ease infinite;
-}
-@keyframes gradflow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-.hero p{font-size:1.1rem;color:var(--muted);max-width:560px;line-height:1.6}
-.hero-btns{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+.socials a:hover{transform:translateY(-3px);border-color:var(--pink)}
+.socials svg{width:22px;height:22px;fill:var(--pink-d)}
 .btn{
-  padding:15px 32px;border-radius:999px;font-weight:600;font-size:.95rem;
-  transition:transform .25s ease, box-shadow .25s ease;display:inline-flex;align-items:center;gap:8px;
+  font:inherit;font-weight:600;color:#fff;background:var(--pink-d);
+  border:0;border-radius:999px;padding:12px 28px;cursor:pointer;
+  transition:transform .15s,background .15s;
 }
-.btn-primary{background:var(--grad-main);color:#0a0b16;box-shadow:0 10px 30px rgba(255,95,168,0.3)}
-.btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(255,95,168,0.45)}
-.btn-ghost{border:1px solid var(--panel-brd);color:var(--ink);background:var(--panel)}
-.btn-ghost:hover{background:rgba(255,255,255,0.08);transform:translateY(-3px)}
-.social-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:6px}
-.social-btn{
-  display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;
-  background:var(--panel);border:1px solid var(--panel-brd);color:var(--ink);font-weight:600;font-size:.9rem;
-  transition:transform .25s ease, border-color .25s ease, background .25s ease, box-shadow .25s ease, opacity .25s ease;
-  cursor:pointer;
+.btn:hover{transform:translateY(-2px);background:#e2548a}
+.btn:disabled{opacity:.6;cursor:default;transform:none}
+.support-box{text-align:center}
+.support-box p{color:var(--soft);margin-bottom:16px}
+footer{text-align:center;color:#fff;font-size:.9rem;padding-top:8px;text-shadow:0 2px 10px rgba(0,0,0,.45)}
+.overlay{
+  position:fixed;inset:0;background:rgba(59,47,74,.5);
+  display:none;align-items:center;justify-content:center;padding:20px;z-index:10;
 }
-.social-btn svg{width:18px;height:18px;flex-shrink:0}
-.social-btn:hover:not(.disabled){transform:translateY(-3px);border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.08);box-shadow:0 10px 26px rgba(0,0,0,0.35)}
-.social-btn.disabled{opacity:.45;cursor:not-allowed}
-.social-btn.discord:hover:not(.disabled){border-color:#8a5cff;box-shadow:0 10px 26px rgba(138,92,255,0.35)}
-.social-btn.instagram:hover:not(.disabled){border-color:#ff5fa8;box-shadow:0 10px 26px rgba(255,95,168,0.35)}
-.social-btn.telegram:hover:not(.disabled){border-color:#2ce0f0;box-shadow:0 10px 26px rgba(44,224,240,0.35)}
-.social-btn.facebook:hover:not(.disabled){border-color:#4267B2;box-shadow:0 10px 26px rgba(66,103,178,0.35)}
-
-.scroll-cue{
-  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--muted);font-size:.75rem;
-  letter-spacing:2px;text-transform:uppercase;
+.overlay.open{display:flex}
+.modal{
+  background:#fff;color:var(--ink);border-radius:28px;padding:28px;width:100%;max-width:440px;
+  max-height:92vh;overflow:auto;position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
 }
-.scroll-cue .line{width:1px;height:40px;background:linear-gradient(var(--purple),transparent);
-  animation:scrolldown 1.8s ease-in-out infinite;}
-@keyframes scrolldown{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-
-.path-section{position:relative;padding:0 6vw;max-width:1200px;margin:0 auto}
-.path-svg{width:100%;height:120px;display:block}
-.path-svg path{
-  fill:none;stroke:url(#pathgrad);stroke-width:3;stroke-linecap:round;
-  stroke-dasharray:1200;stroke-dashoffset:1200;transition:stroke-dashoffset 1.8s ease;
+.modal h3{font-size:1.4rem;margin-bottom:16px}
+.close{
+  position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;
+  border:0;background:#fdeaf3;color:var(--ink);font-size:1.2rem;cursor:pointer;
 }
-.path-svg.in-view path{stroke-dashoffset:0}
-
-section{padding:70px 6vw;max-width:1300px;margin:0 auto;position:relative}
-.section-head{text-align:center;max-width:640px;margin:0 auto 56px}
-.section-head .eyebrow{margin-bottom:18px;display:inline-block}
-.section-head h2{font-size:clamp(2rem,4vw,3rem);font-weight:800;margin-bottom:14px}
-.section-head p{color:var(--muted);font-size:1.02rem;line-height:1.6}
-
-.games-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px}
-.game-card{
-  background:var(--panel);border:1px solid var(--panel-brd);border-radius:var(--radius);
-  padding:34px 30px;position:relative;overflow:hidden;
-  transition:transform .4s ease, border-color .4s ease, box-shadow .4s ease;
+label{display:block;font-weight:500;margin:14px 0 6px}
+select,input,textarea{
+  width:100%;font:inherit;color:var(--ink);padding:12px 14px;
+  border:2px solid var(--line);border-radius:14px;background:#fff;outline:none;
 }
-.game-card::before{
-  content:'';position:absolute;inset:0;opacity:0;transition:opacity .4s ease;
-  background:radial-gradient(circle at 30% 0%,rgba(138,92,255,0.25),transparent 60%);
-}
-.game-card:hover{transform:translateY(-8px);border-color:rgba(138,92,255,0.5);box-shadow:0 20px 50px rgba(20,10,50,0.5)}
-.game-card:hover::before{opacity:1}
-.game-logo{
-  width:72px;height:72px;border-radius:16px;background:rgba(255,255,255,0.05);
-  display:flex;align-items:center;justify-content:center;margin-bottom:22px;overflow:hidden;
-  border:1px solid var(--panel-brd);
-}
-.game-logo img{width:100%;height:100%;object-fit:cover}
-.game-logo .fallback{
-  width:100%;height:100%;background:var(--grad-cool);display:flex;align-items:center;justify-content:center;
-  font-family:'Unbounded';font-weight:800;color:#0a0b16;font-size:1.4rem;
-}
-.game-card h3{font-size:1.35rem;margin-bottom:10px;font-weight:700}
-.game-card p{color:var(--muted);font-size:.94rem;line-height:1.6;margin-bottom:22px}
-.game-status{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
-.badge{
-  font-size:.72rem;letter-spacing:1px;text-transform:uppercase;font-weight:700;padding:6px 14px;border-radius:999px;
-}
-.badge.released{background:rgba(44,224,240,0.15);color:var(--cyan);border:1px solid rgba(44,224,240,0.4)}
-.badge.dev{background:rgba(255,194,75,0.15);color:var(--amber);border:1px solid rgba(255,194,75,0.4)}
-.steam-link{
-  font-size:.85rem;font-weight:600;color:var(--ink);display:inline-flex;align-items:center;gap:6px;
-  border-bottom:1px solid transparent;transition:border-color .25s ease;
-}
-.steam-link:hover{border-color:var(--ink)}
-
-.values{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
-.value-card{
-  background:var(--panel);border:1px solid var(--panel-brd);border-radius:var(--radius);
-  padding:28px 24px;transition:transform .3s ease,border-color .3s ease;
-}
-.value-card:hover{transform:translateY(-6px);border-color:rgba(255,95,168,0.4)}
-.value-card .num{font-family:'Unbounded';font-weight:800;font-size:.85rem;color:var(--pink);margin-bottom:14px}
-.value-card h4{font-size:1.1rem;margin-bottom:8px;font-weight:700}
-.value-card p{color:var(--muted);font-size:.9rem;line-height:1.55}
-
-.cta-band{
-  border-radius:24px;padding:64px 6vw;text-align:center;position:relative;overflow:hidden;
-  background:linear-gradient(135deg,rgba(138,92,255,0.15),rgba(255,95,168,0.12));
-  border:1px solid var(--panel-brd);margin:0 6vw 80px;
-}
-.cta-band h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-bottom:16px}
-.cta-band p{color:var(--muted);margin-bottom:30px;max-width:520px;margin-left:auto;margin-right:auto}
-
-footer{padding:50px 6vw 40px;border-top:1px solid var(--panel-brd);}
-.footer-inner{
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:center;
-  max-width:1300px;
-  margin:0 auto;
-}
-.footer-brand{display:flex;align-items:center;gap:10px;justify-self:start}
-.footer-brand img{height:26px;width:26px;object-fit:contain}
-.footer-brand span{font-family:'Fredoka','Grandstander',cursive,sans-serif;font-weight:700;font-size:1.15rem}
-.footer-links{display:flex;gap:26px;font-size:.85rem;color:var(--muted);justify-self:end}
-.footer-links a:hover{color:var(--ink)}
-.footer-copy{grid-column:2;text-align:center;font-size:.78rem;color:var(--muted);justify-self:center}
-
-.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease, transform .8s ease}
-.reveal.in-view{opacity:1;transform:translateY(0)}
-
-@media(max-width:900px){
-  nav{display:flex;justify-content:space-between}
-  .nav-links,.nav-cta{display:none}
-  .burger{display:flex}
-  .footer-inner{
-    display:flex;
-    flex-direction:column;
-    text-align:center;
-    gap:18px;
-  }
-  .footer-brand, .footer-links, .footer-copy{justify-self:center}
-}
-@media(max-width:520px){
-  .hero{padding-top:120px}
-  .hero-logo-wrap{width:110px;height:110px}
-  .btn{padding:13px 24px;font-size:.88rem}
-  section{padding:50px 6vw}
-  .cta-band{padding:44px 6vw}
-}
-@media(prefers-reduced-motion:reduce){
-  *{animation:none!important;transition:none!important}
-}
+select:focus,input:focus,textarea:focus,.btn:focus-visible,a:focus-visible,.close:focus-visible{border-color:var(--pink-d);outline:2px solid var(--pink);outline-offset:2px}
+select option{color:#2a1a3d}
+input::placeholder{color:#a99bb8}
+textarea{resize:vertical;min-height:110px}
+.modal .btn{width:100%;margin-top:20px}
+#status{margin-top:12px;text-align:center;font-weight:500;min-height:1.4em}
+#status.ok{color:#2e9a62}
+#status.err{color:#d6405f}
 </style>
 </head>
 <body>
 
-<div class="bg-fx"></div>
-<div class="grain"></div>
-<div class="cubes" id="cubes"></div>
-
-<nav id="nav">
-  <a class="brand" href="#top">
-    <img src="Images/logo_0.png" alt="Own Way Games logo">
-    <span>OWN WAY GAMES</span>
-  </a>
-  <div class="nav-links">
-    <a href="#top">Home</a>
-    <a href="#games">Games</a>
-    <a href="#values">Studio</a>
-    <a href="support.html">Support</a>
-  </div>
-  <a class="nav-cta" href="support.html">Get Support</a>
-  <div class="burger" id="burger"><span></span><span></span><span></span></div>
-</nav>
-
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#top">Home</a>
-  <a href="#games">Games</a>
-  <a href="#values">Studio</a>
-  <a href="support.html">Support</a>
-</div>
-
-<header class="hero" id="top">
-  <div class="hero-bg"></div>
-  <div class="hero-inner">
-    <span class="eyebrow">Independent Game Studio</span>
-    <div class="hero-logo-wrap">
-      <img src="Images/logo_0.png" alt="Own Way Games" id="heroLogo">
-    </div>
-    <h1>I Build Games<br>On My Own Way</h1>
-    <p>Own Way Games is a small studio crafting bold, block-built worlds and stories that don't follow the map. Every project is a path we cut ourselves.</p>
-    <div class="hero-btns">
-      <a class="btn btn-primary" href="#games">Explore Our Games</a>
-      <a class="btn btn-ghost" href="support.html">Contact The Studio</a>
-    </div>
-    <div class="social-row" id="socialRow"></div>
-  </div>
-  <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
-</header>
-
-<div class="path-section">
-  <svg class="path-svg" id="pathSvg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-    <defs>
-      <linearGradient id="pathgrad" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stop-color="#8a5cff"/>
-        <stop offset="50%" stop-color="#ff5fa8"/>
-        <stop offset="100%" stop-color="#ffc24b"/>
-      </linearGradient>
-    </defs>
-    <path d="M0,60 C200,10 300,110 500,60 C700,10 800,110 1000,60 C1100,35 1150,35 1200,60"/>
-  </svg>
-</div>
-
-<section id="games">
-  <div class="section-head reveal">
-    <span class="eyebrow">Our Catalog</span>
-    <h2>Games we're forging</h2>
-    <p>From early prototypes to Steam-bound releases, here's what's on our workbench right now.</p>
-  </div>
-  <div class="games-grid" id="gamesGrid"></div>
-</section>
-
-<section id="values">
-  <div class="section-head reveal">
-    <span class="eyebrow">Why Own Way</span>
-    <h2>Small studio, sharp direction</h2>
-    <p>No publisher scripts. No formulas. Just a tight team that ships what it believes in.</p>
-  </div>
-  <div class="values">
-    <div class="value-card reveal">
-      <div class="num">Independent</div>
-      <h4>Self-published</h4>
-      <p>We own our roadmap end to end, so every design decision serves the players, not a spreadsheet.</p>
-    </div>
-    <div class="value-card reveal">
-      <div class="num">Handcrafted</div>
-      <h4>Built block by block</h4>
-      <p>Systems and worlds are designed from the ground up, with care put into every mechanic that ships.</p>
-    </div>
-    <div class="value-card reveal">
-      <div class="num">Community-first</div>
-      <h4>We listen and iterate</h4>
-      <p>Feedback, bugs and ideas from players shape the games directly, no closed doors.</p>
-    </div>
-  </div>
-</section>
-
-<div class="cta-band reveal">
-  <h2>Got feedback, a bug, or an idea?</h2>
-  <p>Tell us what's on your mind and we'll route it straight to the right team on Discord.</p>
-  <a class="btn btn-primary" href="support.html">Open Support</a>
-</div>
-
-<footer>
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <img src="Images/logo_0.png" alt="Own Way Games">
-      <span>OWN WAY GAMES</span>
-    </div>
-    <div class="footer-copy">© 2026 Own Way Games. All paths lead somewhere.</div>
-    <div class="footer-links">
-      <a href="#top">Home</a>
-      <a href="#games">Games</a>
-      <a href="support.html">Support</a>
-    </div>
-  </div>
-</footer>
-
 <script>
 const gamesData = [
-  {
-    "gameName": "Cubito World",
-    "gameDescription": "Your base is waiting for you! Jump in to start crafting, building, farming, flying, and solving puzzles. Hunt hot air balloons, raise Cubito animals, get pets, recruit NPCs, customize player, animal, and pet skins, spray stickers, and more! Play unique game modes solo or with up to 4 players online!",
-    "isReleased": false,
-    "steamStorePage": "",
-    "paths": { "logo": "cubitoworld/logo.png" }
-  }
+  { "name": "Ownway", "embed": '<iframe src="https://store.steampowered.com/widget/4297190/" frameborder="0" width="646" height="190"></iframe>' }
 ];
+
+const subjectsData = [
+  { "name": "FeedBack", "Discordwebhook": "https://discord.com/api/webhooks/1541878029259907193/aihFqRinRosFInMkP2srFDQoLIDYTfCpOGKERWPQaLXzpkaQVt17a-Kj3UbqEeI561SJ" },
+  { "name": "Bug", "Discordwebhook": "https://discord.com/api/webhooks/1541878167273218061/w8DP2Q38wm2ns2vmoUGl2AmN2yOiRfS0c3Hx4cj5vLGCHJ86fWZjCyUoWiSZyOtbVnAp" },
+  { "name": "Offer An Idea", "Discordwebhook": "https://discord.com/api/webhooks/1541878256565883000/B_tXJRL4At4OjOk7BcuTBbFc4NZ8AomgQOSQk4fCdinX0xby-dDKmMyKQBDfywcN6bxf" },
+  { "name": "Something Else", "Discordwebhook": "https://discord.com/api/webhooks/1541878343593500767/kmoPSJwqXrCuB1TItBhY99cS4-vnAMkamzqon-GKIw-8cDKuL_GG2cp3A8bXGjUrH-Fd" }
+];
+
+const contactData = ["Email", "Discord"];
 
 const socialsData = [
-  { "Name": "Discord", "Url": "https://discord.gg/FuuUkTCBWC" },
-  { "Name": "Instagram", "Url": "https://www.instagram.com/ownwaygame?stkn=dXF2c3Iyc2FpZmNq" },
-  { "Name": "Telegram", "Url": "https://t.me/CubitoWorld" },
-  { "Name": "Facebook", "Url": "https://www.facebook.com/share/1T76SS5mS2/" }
+  { "name": "Discord", "url": "https://discord.gg/FuuUkTCBWC", "icon": "M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.2.5a18 18 0 0 1 4.3 1.6 15 15 0 0 0-14-.1A18 18 0 0 1 9.8 3.4L9.6 3a19.8 19.8 0 0 0-4.9 1.4C1.600 9 .8 13.500 1.200 17.900a19.900 19.900 0 0 0 6 3l1.300-2a13 13 0 0 1-2-1l.5-.4a14.200 14.200 0 0 0 12.200 0l.5.4a13 13 0 0 1-2 1l1.300 2a19.900 19.900 0 0 0 6-3c.5-5.100-.8-9.600-3.700-13.500ZM8.700 15.200c-1.200 0-2.100-1.100-2.100-2.400s.9-2.400 2.100-2.400 2.100 1.100 2.100 2.400-.9 2.400-2.100 2.400Zm6.600 0c-1.200 0-2.100-1.100-2.100-2.400s.9-2.400 2.100-2.400 2.100 1.100 2.100 2.400-.9 2.400-2.100 2.400Z" },
+  { "name": "Instagram", "url": "https://www.instagram.com/ownwaygame?stkn=dXF2c3Iyc2FpZmNq", "icon": "M7.500 2h9A5.500 5.500 0 0 1 22 7.500v9a5.500 5.500 0 0 1-5.500 5.500h-9A5.500 5.500 0 0 1 2 16.500v-9A5.500 5.500 0 0 1 7.500 2Zm0 2A3.500 3.500 0 0 0 4 7.500v9A3.500 3.500 0 0 0 7.500 20h9a3.500 3.500 0 0 0 3.500-3.500v-9A3.500 3.500 0 0 0 16.500 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.200-3.200a1.200 1.200 0 1 1 0 2.400 1.200 1.200 0 0 1 0-2.400Z" },
+  { "name": "Telegram", "url": "https://t.me/CubitoWorld", "icon": "M21.900 4.300 18.600 19.800c-.2 1-.9 1.300-1.700.8l-4.800-3.500-2.300 2.200c-.3.300-.5.500-1 .5l.3-4.900 8.900-8c.4-.3-.1-.5-.6-.2L6.400 13.600l-4.700-1.500c-1-.3-1-1 .2-1.500L20.400 3.500c.9-.3 1.600.2 1.500.8Z" },
+  { "name": "Facebook", "url": "https://www.facebook.com/share/1T76SS5mS2/", "icon": "M13.500 22v-8.500h2.900l.4-3.400h-3.300V8c0-1 .3-1.600 1.700-1.600h1.800V3.400C16.700 3.300 15.600 3.200 14.400 3.200c-2.600 0-4.300 1.600-4.300 4.400v2.500H7.200v3.400h2.900V22h3.400Z" }
 ];
+</script>
 
-const socialIcons = {
-  discord: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028ZM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418Zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418Z"/></svg>',
-  instagram: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>',
-  telegram: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.121l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.128.832.942z"/></svg>',
-  facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>'
-};
+<div class="wrap">
+  <header>
+    <img src="images/logo.png" alt="OwnWayGames">
+    <p>Making Games On My Own Way</p>
+  </header>
 
-const socialRow = document.getElementById('socialRow');
+  <section>
+    <h2>Socials</h2>
+    <div class="socials" id="socials-list"></div>
+  </section>
+
+  <section>
+    <h2>Games</h2>
+    <div id="games-list"></div>
+  </section>
+
+  <section class="support-box">
+    <h2>Support</h2>
+    <p>Found a bug or have an idea? Tell us.</p>
+    <button class="btn" id="open-support">Contact support</button>
+  </section>
+
+  <footer>&copy; <span id="year"></span> OwnWayGames</footer>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="close" id="close-support" aria-label="Close">&times;</button>
+    <h3 id="modal-title">Support</h3>
+    <form id="support-form" onsubmit="return false">
+      <label for="subject">Subject</label>
+      <select id="subject"></select>
+
+      <label for="way">Way to contact</label>
+      <select id="way"></select>
+
+      <label for="contact" id="contact-label">Email</label>
+      <input id="contact" type="text" required>
+
+      <label for="message">Message</label>
+      <textarea id="message" required></textarea>
+
+      <button class="btn" id="send" type="submit">Send</button>
+      <div id="status" role="status"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+
+const gamesList = document.getElementById("games-list");
+gamesData.forEach(g => {
+  const box = document.createElement("div");
+  box.innerHTML = g.embed;
+  gamesList.appendChild(box);
+});
+
+const socialsList = document.getElementById("socials-list");
 socialsData.forEach(s => {
-  const hasUrl = !!s.Url;
-  const btn = document.createElement(hasUrl ? 'a' : 'button');
-  const key = s.Name.toLowerCase();
-  btn.className = `social-btn ${key} ${hasUrl ? '' : 'disabled'}`.trim();
-  if(hasUrl){
-    btn.href = s.Url;
-    btn.target = '_blank';
-    btn.rel = 'noopener';
+  const a = document.createElement("a");
+  a.href = s.url;
+  a.target = "_blank";
+  a.rel = "noopener";
+  a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + s.icon + '"/></svg>' + s.name;
+  socialsList.appendChild(a);
+
+});
+
+const overlay = document.getElementById("overlay");
+const subject = document.getElementById("subject");
+const way = document.getElementById("way");
+const contact = document.getElementById("contact");
+const contactLabel = document.getElementById("contact-label");
+const message = document.getElementById("message");
+const send = document.getElementById("send");
+const statusEl = document.getElementById("status");
+
+subjectsData.forEach((s, i) => subject.add(new Option(s.name, i)));
+contactData.forEach(c => way.add(new Option(c, c)));
+
+function updateContact(){
+  if (way.value === "Email"){
+    contactLabel.textContent = "Your email";
+    contact.type = "email";
+    contact.placeholder = "you@example.com";
   } else {
-    btn.type = 'button';
-    btn.title = `${s.Name} link coming soon`;
-    btn.addEventListener('click', () => false);
+    contactLabel.textContent = "Your Discord username";
+    contact.type = "text";
+    contact.placeholder = "username";
   }
-  btn.innerHTML = `${socialIcons[key] || ''}<span>${s.Name}</span>`;
-  socialRow.appendChild(btn);
-});
-
-const gamesGrid = document.getElementById('gamesGrid');
-gamesData.forEach(game => {
-  const card = document.createElement('div');
-  card.className = 'game-card reveal';
-  const initials = game.gameName.split(' ').map(w => w[0]).join('').slice(0,2);
-  const statusBadge = game.isReleased
-    ? '<span class="badge released">Released</span>'
-    : '<span class="badge dev">In Development</span>';
-  const steamLink = (game.isReleased && game.steamStorePage)
-    ? `<a class="steam-link" href="${game.steamStorePage}" target="_blank" rel="noopener">View on Steam →</a>`
-    : `<span class="steam-link" style="opacity:.5">Coming to Steam</span>`;
-
-  card.innerHTML = `
-    <div class="game-logo">
-      <img src="Images/${game.paths.logo}" alt="${game.gameName} logo" onerror="this.parentElement.innerHTML='<div class=\\'fallback\\'>${initials}</div>'">
-    </div>
-    <h3>${game.gameName}</h3>
-    <p>${game.gameDescription}</p>
-    <div class="game-status">${statusBadge}${steamLink}</div>
-  `;
-  gamesGrid.appendChild(card);
-});
-
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 40);
-});
-
-const burger = document.getElementById('burger');
-const mobileMenu = document.getElementById('mobileMenu');
-burger.addEventListener('click', () => {
-  burger.classList.toggle('open');
-  mobileMenu.classList.toggle('open');
-});
-mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-  burger.classList.remove('open');
-  mobileMenu.classList.remove('open');
-}));
-
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in-view'); });
-}, { threshold: 0.15 });
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-const pathSvg = document.getElementById('pathSvg');
-const pathIo = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) pathSvg.classList.add('in-view'); });
-}, { threshold: 0.4 });
-pathIo.observe(pathSvg);
-
-const cubeWrap = document.getElementById('cubes');
-const cubeColors = ['#8a5cff','#2ce0f0','#ff5fa8','#ffc24b'];
-for(let i=0;i<22;i++){
-  const c = document.createElement('div');
-  c.className = 'cube';
-  const size = 8 + Math.random()*22;
-  c.style.width = size+'px';
-  c.style.height = size+'px';
-  c.style.left = Math.random()*100+'vw';
-  c.style.top = 100+Math.random()*20+'vh';
-  c.style.background = cubeColors[i % cubeColors.length]+'33';
-  c.style.borderColor = cubeColors[i % cubeColors.length]+'55';
-  c.style.animationDuration = (14+Math.random()*16)+'s';
-  c.style.animationDelay = (Math.random()*10)+'s';
-  cubeWrap.appendChild(c);
 }
+way.addEventListener("change", updateContact);
+updateContact();
 
-const heroLogo = document.getElementById('heroLogo');
-window.addEventListener('mousemove', (e) => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 18;
-  const y = (e.clientY / window.innerHeight - 0.5) * 18;
-  heroLogo.style.transform = `translate(${x}px, ${y}px)`;
+function openModal(){ overlay.classList.add("open"); }
+function closeModal(){ overlay.classList.remove("open"); }
+
+document.getElementById("open-support").addEventListener("click", openModal);
+document.getElementById("close-support").addEventListener("click", closeModal);
+overlay.addEventListener("click", e => { if (e.target === overlay) closeModal(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+document.getElementById("support-form").addEventListener("submit", async () => {
+  if (!contact.value.trim() || !message.value.trim()){
+    statusEl.className = "err";
+    statusEl.textContent = "Please fill in every field.";
+    return;
+  }
+  const s = subjectsData[subject.value];
+  send.disabled = true;
+  statusEl.className = "";
+  statusEl.textContent = "Sending...";
+  try {
+    const res = await fetch(s.Discordwebhook, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        embeds: [{
+          title: s.name,
+          color: 0xf0679b,
+          fields: [
+            { name: "Way to contact", value: way.value, inline: true },
+            { name: way.value === "Email" ? "Email" : "Discord username", value: contact.value.trim().slice(0, 200), inline: true },
+            { name: "Message", value: message.value.trim().slice(0, 1000) }
+          ],
+          timestamp: new Date().toISOString()
+        }]
+      })
+    });
+    if (!res.ok) throw new Error();
+    statusEl.className = "ok";
+    statusEl.textContent = "Sent! Thank you.";
+    message.value = "";
+    contact.value = "";
+  } catch (e) {
+    statusEl.className = "err";
+    statusEl.textContent = "Could not send. Please try again.";
+  }
+  send.disabled = false;
 });
 </script>
 </body>
