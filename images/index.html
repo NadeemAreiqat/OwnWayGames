@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OwnWayGames</title>
+<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/favicon.ico">
+<meta name="description" content="OwnWayGames - an indie game studio making games on my own way. Find our games, follow us, and get support.">
+<meta name="keywords" content="OwnWayGames, OwnWay, indie games, indie game studio, Steam games, Cubito, game developer">
+<meta name="author" content="OwnWayGames">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#ff8fb8">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="OwnWayGames">
+<meta property="og:title" content="OwnWayGames">
+<meta property="og:description" content="Making games on my own way.">
+<meta property="og:image" content="images/favicon.ico">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OwnWayGames">
+<meta name="twitter:description" content="Making games on my own way.">
+<meta name="twitter:image" content="images/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#3b2f4a;
+  --soft:#6f6280;
+  --card:rgba(255,255,255,.88);
+  --pink:#ff8fb8;
+  --pink-d:#f0679b;
+  --line:#f3d4e2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar,body::-webkit-scrollbar{display:none;width:0;height:0}
+body{
+  font-family:'Fredoka',system-ui,sans-serif;
+  color:var(--ink);
+  min-height:100vh;
+  background:#fdeaf3;
+  line-height:1.5;
+}
+body::before{
+  content:"";position:fixed;top:0;left:0;width:100%;height:100vh;height:100lvh;
+  background:url("images/background.png") center/cover no-repeat;
+  z-index:-1;pointer-events:none;transform:translateZ(0);
+}
+.wrap{max-width:760px;margin:0 auto;padding:56px 20px 40px}
+
+header{text-align:center;margin-bottom:40px}
+header img{display:block;margin:0 auto;max-width:min(320px,80%);height:auto;filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))}
+header p{color:#fff;font-size:1.2rem;font-weight:500;margin-top:12px;text-shadow:0 2px 10px rgba(0,0,0,.45)}
+section{
+  background:var(--card);
+  border-radius:28px;
+  padding:28px;
+  margin-bottom:24px;
+  backdrop-filter:blur(6px);
+  box-shadow:0 8px 30px rgba(240,103,155,.15);
+}
+section h2{font-size:1.5rem;margin-bottom:18px}
+#games-list{display:flex;flex-direction:column;gap:24px;align-items:center}
+.game-item{width:100%;display:flex;flex-direction:column;align-items:center;gap:16px}
+#games-list iframe{max-width:100%;border:0;border-radius:12px}
+.socials{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.socials a{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px;border-radius:18px;text-decoration:none;
+  color:var(--ink);font-weight:600;background:#fff;border:2px solid var(--line);
+  transition:transform .15s,border-color .15s;
+}
+.socials a:hover{transform:translateY(-3px);border-color:var(--pink)}
+.socials svg{width:22px;height:22px;fill:var(--pink-d)}
+.btn{
+  font:inherit;font-weight:600;color:#fff;background:var(--pink-d);
+  border:0;border-radius:999px;padding:12px 28px;cursor:pointer;
+  transition:transform .15s,background .15s; text-decoration:none; display:inline-block;
+}
+.btn:hover{transform:translateY(-2px);background:#e2548a}
+.btn:disabled{opacity:.6;cursor:default;transform:none}
+.support-box{text-align:center}
+.support-box p{color:var(--soft);margin-bottom:16px}
+footer{text-align:center;color:#fff;font-size:.9rem;padding-top:8px;text-shadow:0 2px 10px rgba(0,0,0,.45)}
+.overlay{
+  position:fixed;inset:0;background:rgba(59,47,74,.5);
+  display:none;align-items:center;justify-content:center;padding:20px;z-index:10;
+}
+.overlay.open{display:flex}
+.modal{
+  background:#fff;color:var(--ink);border-radius:28px;padding:28px;width:100%;max-width:440px;
+  max-height:92vh;overflow:auto;position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+.modal h3{font-size:1.4rem;margin-bottom:16px}
+.close{
+  position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;
+  border:0;background:#fdeaf3;color:var(--ink);font-size:1.2rem;cursor:pointer;
+}
+label{display:block;font-weight:500;margin:14px 0 6px}
+select,input,textarea{
+  width:100%;font:inherit;color:var(--ink);padding:12px 14px;
+  border:2px solid var(--line);border-radius:14px;background:#fff;outline:none;
+}
+select:focus,input:focus,textarea:focus,.btn:focus-visible,a:focus-visible,.close:focus-visible{border-color:var(--pink-d);outline:2px solid var(--pink);outline-offset:2px}
+select option{color:#2a1a3d}
+input::placeholder{color:#a99bb8}
+textarea{resize:vertical;min-height:110px}
+.modal .btn{width:100%;margin-top:20px}
+#status{margin-top:12px;text-align:center;font-weight:500;min-height:1.4em}
+#status.ok{color:#2e9a62}
+#status.err{color:#d6405f}
+.invest-panel{background:#fdeaf3;width:100%;padding:20px;border-radius:18px;border:2px solid var(--line);display:flex;flex-direction:column;gap:12px}
+.invest-panel h3{font-size:1.2rem;color:var(--pink-d)}
+.invest-panel p{font-size:.95rem;font-weight:500}
+.invest-panel ul{list-style:disc;margin-left:20px;display:flex;flex-direction:column;gap:6px;font-weight:500}
+</style>
+</head>
+<body>
+
+<script>
+const gamesData = [
+  { 
+    "name": "Ownway", 
+    "embed": '<iframe src="https://store.steampowered.com/widget/4297190/" frameborder="0" width="646" height="190"></iframe>',
+    "invest": true
+  }
+];
+
+const subjectsData = [
+  { "name": "FeedBack", "Discordwebhook": "https://discord.com/api/webhooks/1541878029259907193/aihFqRinRosFInMkP2srFDQoLIDYTfCpOGKERWPQaLXzpkaQVt17a-Kj3UbqEeI561SJ" },
+  { "name": "Bug", "Discordwebhook": "https://discord.com/api/webhooks/1541878167273218061/w8DP2Q38wm2ns2vmoUGl2AmN2yOiRfS0c3Hx4cj5vLGCHJ86fWZjCyUoWiSZyOtbVnAp" },
+  { "name": "Offer An Idea", "Discordwebhook": "https://discord.com/api/webhooks/1541878256565883000/B_tXJRL4At4OjOk7BcuTBbFc4NZ8AomgQOSQk4fCdinX0xby-dDKmMyKQBDfywcN6bxf" },
+  { "name": "Something Else", "Discordwebhook": "https://discord.com/api/webhooks/1541878343593500767/kmoPSJwqXrCuB1TItBhY99cS4-vnAMkamzqon-GKIw-8cDKuL_GG2cp3A8bXGjUrH-Fd" }
+];
+
+const contactData = ["Email", "Discord"];
+
+const socialsData = [
+  { "name": "Discord", "url": "https://discord.gg/FuuUkTCBWC", "icon": "M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.2.5a18 18 0 0 1 4.3 1.6 15 15 0 0 0-14-.1A18 18 0 0 1 9.8 3.4L9.6 3a19.8 19.8 0 0 0-4.9 1.4C1.600 9 .8 13.500 1.200 17.900a19.900 19.900 0 0 0 6 3l1.300-2a13 13 0 0 1-2-1l.5-.4a14.200 14.200 0 0 0 12.200 0l.5.4a13 13 0 0 1-2 1l1.300 2a19.900 19.900 0 0 0 6-3c.5-5.100-.8-9.600-3.700-13.500ZM8.700 15.200c-1.200 0-2.100-1.100-2.100-2.400s.9-2.400 2.100-2.400 2.100 1.100 2.100 2.400-.9 2.400-2.100 2.400Zm6.600 0c-1.200 0-2.100-1.100-2.100-2.400s.9-2.400 2.100-2.400 2.100 1.100 2.100 2.400-.9 2.400-2.100 2.400Z" },
+  { "name": "Instagram", "url": "https://www.instagram.com/ownwaygame?stkn=dXF2c3Iyc2FpZmNq", "icon": "M7.500 2h9A5.500 5.500 0 0 1 22 7.500v9a5.500 5.500 0 0 1-5.500 5.500h-9A5.500 5.500 0 0 1 2 16.500v-9A5.500 5.500 0 0 1 7.500 2Zm0 2A3.500 3.500 0 0 0 4 7.500v9A3.500 3.500 0 0 0 7.500 20h9a3.500 3.500 0 0 0 3.500-3.500v-9A3.500 3.500 0 0 0 16.500 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.200-3.200a1.200 1.200 0 1 1 0 2.400 1.200 1.200 0 0 1 0-2.400Z" },
+  { "name": "Telegram", "url": "https://t.me/CubitoWorld", "icon": "M21.900 4.300 18.600 19.800c-.2 1-.9 1.300-1.700.8l-4.800-3.500-2.300 2.200c-.3.300-.5.500-1 .5l.3-4.900 8.900-8c.4-.3-.1-.5-.6-.2L6.400 13.600l-4.700-1.500c-1-.3-1-1 .2-1.500L20.400 3.500c.9-.3 1.600.2 1.500.8Z" },
+  { "name": "Facebook", "url": "https://www.facebook.com/share/1T76SS5mS2/", "icon": "M13.500 22v-8.500h2.900l.4-3.400h-3.300V8c0-1 .3-1.600 1.700-1.600h1.800V3.400C16.700 3.300 15.600 3.200 14.400 3.200c-2.600 0-4.300 1.600-4.300 4.400v2.500H7.200v3.400h2.900V22h3.400Z" }
+];
+</script>
+
+<div class="wrap">
+  <header>
+    <img src="images/logo.png" alt="OwnWayGames">
+    <p>Making Games On My Own Way</p>
+  </header>
+
+  <section>
+    <h2>Socials</h2>
+    <div class="socials" id="socials-list"></div>
+  </section>
+
+  <section>
+    <h2>Games</h2>
+    <div id="games-list"></div>
+  </section>
+
+  <section class="support-box">
+    <h2>Support</h2>
+    <p>Found a bug or have an idea? Tell us.</p>
+    <button class="btn" id="open-support">Contact support</button>
+  </section>
+
+  <footer>&copy; <span id="year"></span> OwnWayGames</footer>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="close" id="close-support" aria-label="Close">&times;</button>
+    <h3 id="modal-title">Support</h3>
+    <form id="support-form" onsubmit="return false">
+      <label for="subject">Subject</label>
+      <select id="subject"></select>
+
+      <label for="way">Way to contact</label>
+      <select id="way"></select>
+
+      <label for="contact" id="contact-label">Email</label>
+      <input id="contact" type="text" required>
+
+      <label for="message">Message</label>
+      <textarea id="message" required></textarea>
+
+      <button class="btn" id="send" type="submit">Send</button>
+      <div id="status" role="status"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+
+const gamesList = document.getElementById("games-list");
+gamesData.forEach(g => {
+  const container = document.createElement("div");
+  container.className = "game-item";
+  
+  const embedBox = document.createElement("div");
+  embedBox.innerHTML = g.embed;
+  container.appendChild(embedBox);
+
+  if (g.invest) {
+    const investBox = document.createElement("div");
+    investBox.className = "invest-panel";
+    investBox.innerHTML = `
+      <h3>Invest in this Project</h3>
+      <p>Investing is currently <strong>open</strong> with a lowest investment amount of <strong>$1,000 dollars</strong>.</p>
+      <ul>
+        <li>Return up to <strong>2.5X</strong> on your investment</li>
+        <li><strong>60%</strong> of game income will be distributed to all investors every month from launch time</li>
+        <li>Current investors: <strong>zero</strong></li>
+      </ul>
+      <p><strong>Accepted payment methods:</strong> Crypto, PayPal, or Bank Transfer</p>
+      <p style="margin-top:4px;">Want to invest? Email us at: <a href="mailto:ownwaygames.support@gmail.com" style="color:var(--pink-d);text-decoration:underline;">ownwaygames.support@gmail.com</a></p>
+    `;
+    container.appendChild(investBox);
+  }
+
+  gamesList.appendChild(container);
+});
+
+const socialsList = document.getElementById("socials-list");
+socialsData.forEach(s => {
+  const a = document.createElement("a");
+  a.href = s.url;
+  a.target = "_blank";
+  a.rel = "noopener";
+  a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + s.icon + '"/></svg>' + s.name;
+  socialsList.appendChild(a);
+});
+
+const overlay = document.getElementById("overlay");
+const subject = document.getElementById("subject");
+const way = document.getElementById("way");
+const contact = document.getElementById("contact");
+const contactLabel = document.getElementById("contact-label");
+const message = document.getElementById("message");
+const send = document.getElementById("send");
+const statusEl = document.getElementById("status");
+
+subjectsData.forEach((s, i) => subject.add(new Option(s.name, i)));
+contactData.forEach(c => way.add(new Option(c, c)));
+
+function updateContact(){
+  if (way.value === "Email"){
+    contactLabel.textContent = "Your email";
+    contact.type = "email";
+    contact.placeholder = "you@example.com";
+  } else {
+    contactLabel.textContent = "Your Discord username";
+    contact.type = "text";
+    contact.placeholder = "username";
+  }
+}
+way.addEventListener("change", updateContact);
+updateContact();
+
+function openModal(){ overlay.classList.add("open"); }
+function closeModal(){ overlay.classList.remove("open"); }
+
+document.getElementById("open-support").addEventListener("click", openModal);
+document.getElementById("close-support").addEventListener("click", closeModal);
+overlay.addEventListener("click", e => { if (e.target === overlay) closeModal(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+document.getElementById("support-form").addEventListener("submit", async () => {
+  if (!contact.value.trim() || !message.value.trim()){
+    statusEl.className = "err";
+    statusEl.textContent = "Please fill in every field.";
+    return;
+  }
+  const s = subjectsData[subject.value];
+  send.disabled = true;
+  statusEl.className = "";
+  statusEl.textContent = "Sending...";
+  try {
+    const res = await fetch(s.Discordwebhook, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        embeds: [{
+          title: s.name,
+          color: 0xf0679b,
+          fields: [
+            { name: "Way to contact", value: way.value, inline: true },
+            { name: way.value === "Email" ? "Email" : "Discord username", value: contact.value.trim().slice(0, 200), inline: true },
+            { name: "Message", value: message.value.trim().slice(0, 1000) }
+          ],
+          timestamp: new Date().toISOString()
+        }]
+      })
+    });
+    if (!res.ok) throw new Error();
+    statusEl.className = "ok";
+    statusEl.textContent = "Sent! Thank you.";
+    message.value = "";
+    contact.value = "";
+  } catch (e) {
+    statusEl.className = "err";
+    statusEl.textContent = "Could not send. Please try again.";
+  }
+  send.disabled = false;
+});
+</script>
+</body>
+</html>
